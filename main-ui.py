@@ -5,7 +5,7 @@ from tkinter import filedialog
 from tkinter.filedialog import askopenfilename
 
 import pathlib
-from turtle import left, right
+from turtle import hideturtle, left, right
 
 px = 30
 py = 10
@@ -34,25 +34,34 @@ def loadFile():
     path = filedialog.askopenfilename(filetypes=[("Text files","*.txt"),('all files','*.*')])
     fileExtension = pathlib.Path(path).suffix
 
-    if(fileExtension=='.in'):
+    if(fileExtension=='.out' or fileExtension=='.in'):
         textFile = open(path)
         textData = textFile.read()
         textFile.close()
-        inputCanvas.create_text(100,100, text=textData, fill='black')
-        inputCanvas.pack()
+
+        if(fileExtension=='.in'):
+            inputCanvas.create_text(100,100, text=textData, fill='black')
+            inputCanvas.pack()
+        else:
+            outputCanvas.create_text(100,100, text=textData, fill='black')
+            outputCanvas.pack()
+
     elif(fileExtension=='.dfa'):
         print('file extension is dfa')
         #insert code here to process transition table
     else:
+
         print('Invalid file type')
 
 def processFile():
     print('Processing at the moment')
+    statusCanvas.configure(text='imong mommy') #update status message upon processing
 
 def deleteCanvas():
     inputCanvas.delete('all')
+    outputCanvas.delete('all')
 
-#main window
+#-----------main-window---------------
 mainWindow = Tk()
 mainWindow.title('Strings and DFA')
 mainWindow.geometry('1200x600')
@@ -95,17 +104,21 @@ outputFrame.grid(row=0, column=2, sticky='ns', padx=5, pady=5)
 
 #-----------lower-frame--------------
 statusFrame = LabelFrame(lowerFrame, text='Status', width=800, height=100)
+statusFrame.pack_propagate(False)
 statusFrame.pack(anchor='c', padx=px, pady=py)
 
 
 #------------Canvases----------------
-transitionCanvas = Canvas(transitionFrame) #the transition table is presented through this canvas
+transitionCanvas = Canvas(transitionFrame, highlightthickness=1, highlightbackground='black') #the transition table is presented through this canvas
 transitionCanvas.pack(expand=1, fill=Y, padx=5, pady=5)
 
-inputCanvas = Canvas(inputFrame) #the input string is presented through this canvas
+inputCanvas = Canvas(inputFrame, highlightthickness=1, highlightbackground='black') #the input string is presented through this canvas
 inputCanvas.pack(expand=1, fill=Y, padx=5, pady=5)
 
-outputCanvas = Canvas(outputFrame) #the output string is presented through this canvas
+outputCanvas = Canvas(outputFrame, highlightthickness=1, highlightbackground='black') #the output string is presented through this canvas
 outputCanvas.pack(expand=1, fill=Y, padx=5, pady=5)
+
+statusCanvas = Label(statusFrame, text='test')
+statusCanvas.pack()
 
 mainWindow.mainloop()
