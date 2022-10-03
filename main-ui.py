@@ -1,13 +1,14 @@
 from struct import pack
+from textwrap import fill
 from tkinter import *
 from tkinter import filedialog
 from tkinter.filedialog import askopenfilename
 
 import pathlib
+from turtle import left, right
 
 px = 30
 py = 10
-
 
 class ImportTable:
     def __init__(self, window):
@@ -29,7 +30,7 @@ total_columns =  len(dataList[0])
 
 #functionalities
 def loadFile():
-    
+
     path = filedialog.askopenfilename(filetypes=[("Text files","*.txt"),('all files','*.*')])
     fileExtension = pathlib.Path(path).suffix
 
@@ -41,78 +42,70 @@ def loadFile():
         inputCanvas.pack()
     elif(fileExtension=='.dfa'):
         print('file extension is dfa')
+        #insert code here to process transition table
     else:
         print('Invalid file type')
-
-
-    
-    # print('File is loaded')
-
-
 
 def processFile():
     print('Processing at the moment')
 
+def deleteCanvas():
+    inputCanvas.delete('all')
 
 #main window
 mainWindow = Tk()
 mainWindow.title('Strings and DFA')
-mainWindow.geometry('900x500')
+mainWindow.geometry('1200x600')
 mainWindow.config(bg='lightgreen')
 
 
-#main frames
-upperFrame = Frame(mainWindow, width=800, height= 200, bg='red')
-upperFrame.pack(anchor='c', padx=px, pady=py)
+#-----------main-frames---------------
+upperFrame = Frame(mainWindow, width='600', height='100', bg='red', padx=10, pady=10)
+middleFrame = Frame(mainWindow, width='600', height='300', bg='blue',padx=10, pady=10)
+lowerFrame = Frame(mainWindow, width='600', height='100', bg='yellow',padx=10, pady=10)
 
-middleFrame = Frame(mainWindow, width=800, height=300, bg='blue')
-middleFrame.pack(anchor='c', padx=px, pady=py)
+mainWindow.grid_rowconfigure(1, weight=1)
+mainWindow.grid_columnconfigure(0, weight=1)
 
-lowerFrame = Frame(mainWindow, width=800, height=100, bg='yellow')
-lowerFrame.pack(anchor='c', padx=px, pady=py)
-
-
-# transition frames/table
-transitionFrame = LabelFrame(middleFrame, text='Transition table', bg='pink')
-transitionFrame.grid(column=0, row=0, padx=5)
-
-transitionCanvas = Canvas(transitionFrame, width=260, height=300)
-transitionCanvas.pack()
-
-# transitionTable = ImportTable(transitionCanvas)
+upperFrame.grid(row=0, sticky='ew')
+middleFrame.grid(row=1, sticky='nsew')
+lowerFrame.grid(row=2, sticky='ew')
 
 
-#input frame
-inputFrame = LabelFrame(middleFrame, text='Input', bg='violet', width=260, height=300)
-inputFrame.grid(column=1, row=0, padx=5)
+#-----------top-frame-----------------
+loadFileButton = Button(upperFrame, text='Load file', width='40', command=loadFile)
+loadFileButton.pack(side='left', padx=5)
 
-inputCanvas = Canvas(inputFrame, width=260, height=300)
-inputCanvas.pack()
-
-
-#output frame
-outputFrame = LabelFrame(middleFrame, text='Output', bg='white', width=260, height=300)
-outputFrame.grid(column=2, row=0, padx=5)
-
-outputCanvas = Canvas(outputFrame, width=260, height=300)
-outputCanvas.pack()
+processButton = Button(upperFrame, text='Process', width='50', command=deleteCanvas)
+processButton.pack(side='right', padx=5)
 
 
-#status frame
+#-----------middle-frames-------------
+middleFrame.grid_rowconfigure(0, weight=1)
+middleFrame.grid_columnconfigure(1, weight=1)
+
+transitionFrame = LabelFrame(middleFrame, text='Transition table', width='250', height='100', bg='pink')
+inputFrame = LabelFrame(middleFrame, text='Input', width='250', height='100', bg='violet')
+outputFrame = LabelFrame(middleFrame, text='Output', width='250', height='100', bg='white')
+
+transitionFrame.grid(row=0, column=0, sticky='ns', padx=5, pady=5)
+inputFrame.grid(row=0, column=1, sticky='ns', padx=5, pady=5)
+outputFrame.grid(row=0, column=2, sticky='ns', padx=5, pady=5)
+
+
+#-----------lower-frame--------------
 statusFrame = LabelFrame(lowerFrame, text='Status', width=800, height=100)
 statusFrame.pack(anchor='c', padx=px, pady=py)
 
-statusLabel = Label(statusFrame, width=800, height=100)
-statusLabel.configure(text='STATUS') #status message
-statusLabel.pack(anchor='c')
 
+#------------Canvases----------------
+transitionCanvas = Canvas(transitionFrame) #the transition table is presented through this canvas
+transitionCanvas.pack(expand=1, fill=Y, padx=5, pady=5)
 
-#buttons
-loadFileButton = Button(upperFrame, text='Load file', width=40, command=loadFile)
-loadFileButton.grid(column=0, row=0, padx=5)
+inputCanvas = Canvas(inputFrame) #the input string is presented through this canvas
+inputCanvas.pack(expand=1, fill=Y, padx=5, pady=5)
 
-processButton = Button(upperFrame, text='Process', width=40, command=processFile)
-processButton.grid(column=1, row=0)
-
+outputCanvas = Canvas(outputFrame) #the output string is presented through this canvas
+outputCanvas.pack(expand=1, fill=Y, padx=5, pady=5)
 
 mainWindow.mainloop()
