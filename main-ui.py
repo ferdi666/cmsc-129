@@ -1,11 +1,7 @@
-from struct import pack
-from textwrap import fill
 from tkinter import *
 from tkinter import filedialog
-from tkinter.filedialog import askopenfilename
 
 import pathlib
-from turtle import hideturtle, left, right
 
 px = 30
 py = 10
