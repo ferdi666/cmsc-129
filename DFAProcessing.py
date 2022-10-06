@@ -91,8 +91,12 @@ def dfa(path):
         holder.pop(0)
         table.append(holder)
     
+    print()
+
     #creating adjacency table
     for line in table:
+
+        print(line)
         #take the current line, take the first letter of each line, assume that 1st letter and succeeding letters are 
         #connected via states
         curr = line
@@ -116,9 +120,7 @@ def fsstate(dfa_table):
     #change alphabet into array
     state = raw[0].split(',')    
     raw.pop(0)
-    
-    
-    
+
     ftable = [raw[0]] * len(raw) #check first symbol for every string in raw, if +, they are a final state
     stable = [raw[0]] * len(raw) #check first symbol for every string in raw, if -, they are a start state
     for line in raw:
