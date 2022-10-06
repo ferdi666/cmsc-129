@@ -13,7 +13,7 @@ def processFile(user_in, dfa_table):
     #for each line in stringinput, check for the next node given the current node and the state
     for line in stringinput:
         for state in line:
-            print(curr + " " + state)
+            print( str(curr) + " " + state)
             curr = g.nextnode(curr, ord(state)-48)
         
         #added for debugging purposes only, used as guide to know the current node and the state
@@ -47,8 +47,9 @@ class Graph:
     def nextnode(self, n1, state):
         #given state, which is the next node
         for line in graph.items():
-            if n1 == line[0]:
-                return line[1][state]
+            if(line[1]):
+                if n1 == line[0]:
+                   return line[1][state]
             
     #returns the starting node
     def start(self):
@@ -94,10 +95,12 @@ def dfa(path):
     for line in table:
         #take the current line, take the first letter of each line, assume that 1st letter and succeeding letters are 
         #connected via states
-        curr = line[0]
-        line.pop(0)
+        curr = line
+        if(line):
+             line.pop(0)
+        print(curr)
         for letter in line:
-            dfa.edge(curr, letter)
+            dfa.edge(curr[0], letter)
 
     return dfa
 
@@ -122,12 +125,13 @@ def fsstate(dfa_table):
         ftable.pop(0)
         stable.pop(0)
         #in is used for circumstances where start and final shares the same node
-        if '+' in line[0]:
-            line = line.split(',')
-            ftable.append(line[1])
-        elif '-' in line[0]:
-            line = line.split(',')
-            stable.append(line[1])
+        if(line):
+            if '+' in line[0]:
+                 line = line.split(',')
+                 ftable.append(line[1])
+            elif '-' in line[0]:
+                 line = line.split(',')
+                 stable.append(line[1])
     
     return stable, ftable
 
