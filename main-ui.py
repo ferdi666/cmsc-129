@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import filedialog
 
+from DFAProcessing import processFile
+
 import pathlib
 
 px = 30
@@ -26,32 +28,36 @@ total_columns =  len(dataList[0])
 
 #functionalities
 def loadFile():
-
-    path = filedialog.askopenfilename(filetypes=[("Text files","*.txt"),('all files','*.*')])
+    #user_in holds path for string input, dfa_table holds path for transition, global var so we can use it outside this 
+    #function
+    global user_in, dfa_table
+    path = filedialog.askopenfilename(filetypes=[("String files","*.in"),('Transitions','*.dfa')])
     fileExtension = pathlib.Path(path).suffix
-
-    if(fileExtension=='.out' or fileExtension=='.in'):
+    
+    if(fileExtension=='.in'):
         textFile = open(path)
         textData = textFile.read()
         textFile.close()
-
-        if(fileExtension=='.in'):
-            inputCanvas.create_text(100,100, text=textData, fill='black')
-            inputCanvas.pack()
-        else:
-            outputCanvas.create_text(100,100, text=textData, fill='black')
-            outputCanvas.pack()
+        inputCanvas.create_text(100,100, text=textData, fill='black')
+        inputCanvas.pack()
+        user_in = path
 
     elif(fileExtension=='.dfa'):
-        print('file extension is dfa')
-        #insert code here to process transition table
-    else:
+        textFile = open(path)
+        textData = textFile.read()
+        textFile.close()
+        transitionCanvas.create_text(100,100, text=textData, fill='black')
+        transitionCanvas.pack()
+        dfa_table = path
 
+    else:
         print('Invalid file type')
 
-def processFile():
-    print('Processing at the moment')
-    statusCanvas.configure(text='imong mommy') #update status message upon processing
+    return path
+    # print('File is loaded')
+
+def processInputFiles():
+    processFile(user_in, dfa_table)
 
 def deleteCanvas():
     inputCanvas.delete('all')
@@ -81,7 +87,7 @@ lowerFrame.grid(row=2, sticky='ew')
 loadFileButton = Button(upperFrame, text='Load file', width='40', command=loadFile)
 loadFileButton.pack(side='left', padx=5)
 
-processButton = Button(upperFrame, text='Process', width='50', command=deleteCanvas)
+processButton = Button(upperFrame, text='Process', width='50', command=processInputFiles)
 processButton.pack(side='right', padx=5)
 
 
