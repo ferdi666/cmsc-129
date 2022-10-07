@@ -3,6 +3,7 @@ from tkinter import *
 from tkinter import filedialog
 
 from DFAProcessing import processFile
+from errorChecking import checkDFA, checkInput
 
 import pathlib
 
@@ -58,16 +59,9 @@ def loadFile():
     # print('File is loaded')
 
 def processInputFiles():
-    #int flags
-    #check for empty lines
-    #.
-    #.
-
-
-    #if flags == 0 
-    processFile(user_in, dfa_table)
-    #else
     
+    if(checkInput(user_in, dfa_table, statusCanvas) == True and checkDFA(dfa_table) == True):
+        processFile(user_in, dfa_table)      
 
 def deleteCanvas():
     inputCanvas.delete('all')
