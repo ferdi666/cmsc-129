@@ -1,4 +1,5 @@
 from doctest import FAIL_FAST
+from enum import Flag
 import pathlib
 import string
 import linecache
@@ -12,32 +13,14 @@ def checkInput(user_in, dfa_table, statusCanvas):
     flag2=True
     flag3=True
 
-    # firstlineDFA = open(dfa_table)
-    # contentfirstLineDFA = firstlineDFA.read()
-    # firstlineDFA.close()
     particular_line = linecache.getline(dfa_table, 1) #extracts first line from DFA text file
-    #print('particular-line:')
-    #print(particular_line)
-
     res=splitFirstLine(particular_line)#calls for the fuction that removes the comma from the first line from DFA text file and stores it
-    #print(res)
-    # dfa_file = open(dfa_table)
-    # content = dfa_file.readlines()
-    # print('-----------')
-    # print(content[0])
-    # testfile = open(content[0])
-    # raw = testfile.read()
-    # content = raw.split(",")
-    # print('----------->')
-    # print(content)
-    #print("hello")
-    #print("hi", input)
     input=readinput(user_in)#reads the string text file
-    flag3=(compareString(res, input, statusCanvas))#
+
 
     #for loop that checks if there is an empty element
     for i in range (len(input)):
-        if input[i]==[]:
+        if input[i]=='':
             flag1=False
             statusCanvas.configure(text="there's an empty element")
             statusCanvas.pack()
@@ -45,27 +28,54 @@ def checkInput(user_in, dfa_table, statusCanvas):
     #for loop that checks if there is a whitespace in an element
     for i, word in enumerate(input):
         #insert statuscanvas
-        #print ("string[{}] = {}".format(i, word))
         for x in range(len(word)):
-            #print("huh?", word[x])
-            if word[x] == ' ':
+
+            if word[x] == '':
                 flag2 = False
                 statusCanvas.configure(text="existing whitespace in elements")
                 statusCanvas.pack()
                 break
+    
+    flag3=(compareString(res, input, statusCanvas))
 
     if(flag1==False or flag2==False or flag3==False):
         return False
     else:
         return True
 
-# def checkDFA(dfa_table):
-#     particular_line = linecache.getline(dfa_table, 1)
-#     print()
+def checkDFA(dfa_table):
+    particular_line = linecache.getline(dfa_table, 1)
+    print(particular_line)
+    test= splitFirstLine(particular_line)
+    print(test)
+    input=readinput(dfa_table)
+
+    myset = set(test)
+
+    for i in range (len(input)):
+        if input[i]=='':
+
+            print('Theres an empty element --DFA')
+            return False
+
+    #for loop that checks if there is a whitespace in an element
+    for i, dfaword in enumerate(input):
+        #insert statuscanvas
+        for x in range(len(dfaword)):
+            if dfaword[x] == ' ':
+                print("Existing whitespace in elements! --DFA")
+                return False
+    
+    if (len(test) != len(myset)):
+        print('Duplicates in line 1 for DFA file!')
+        return False
+    else:
+        return True 
+
 
 #splits the first line and removes the comma
 def splitFirstLine(firstLine):
-    # print("--------^")
+
     string = firstLine.strip()
     res=string.split(",")
     return res
@@ -76,15 +86,10 @@ def compareString(res, input, statusCanvas):
     setRes = set(res)
     setInput=''.join(input)
     finalInput=set(setInput)
-    # print(testInput)
-    # print(finalInput)
 
     mergedRes = ''.join(setRes)
     mergedInput = ''.join(finalInput)
 
-    # print("--------^")
-    # print(mergedRes)
-    # print(mergedInput)
     if mergedRes == mergedInput:
         print('input strings are valid')
         return True
