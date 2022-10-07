@@ -1,3 +1,4 @@
+from sys import flags
 from tkinter import *
 from tkinter import filedialog
 
@@ -57,7 +58,16 @@ def loadFile():
     # print('File is loaded')
 
 def processInputFiles():
+    #int flags
+    #check for empty lines
+    #.
+    #.
+
+
+    #if flags == 0 
     processFile(user_in, dfa_table)
+    #else
+    
 
 def deleteCanvas():
     inputCanvas.delete('all')

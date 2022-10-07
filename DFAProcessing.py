@@ -9,12 +9,11 @@ def processFile(user_in, dfa_table):
     #create an array of all final states
     start, final = fsstate(dfa_table)
     curr = g.start()
-    
+
     #for each line in stringinput, check for the next node given the current node and the state
     for line in stringinput:
         for state in line:
-            print( str(curr) + " " + state)
-            curr = g.nextnode(curr, ord(state)-48)
+           curr = g.nextnode(curr, ord(state)-48)
         
         #added for debugging purposes only, used as guide to know the current node and the state
         #print(curr + " " + state + "\n")
@@ -47,19 +46,18 @@ class Graph:
     def nextnode(self, n1, state):
         #given state, which is the next node
         for line in graph.items():
-            if(line[1]):
                 if n1 == line[0]:
                    return line[1][state]
             
     #returns the starting node
     def start(self):
-        for key, val in graph.items():
-            return key
+        for key in graph.items():
+            return key[0]
 #check .in file
 #convert input data to array
 def readinput(path):
     file = open(path)
-    raw = file.read();
+    raw = file.read()
     content = raw.split("\n")
     
     return content
@@ -90,21 +88,16 @@ def dfa(path):
         #popping the first column
         holder.pop(0)
         table.append(holder)
-    
-    print()
-
+        
     #creating adjacency table
     for line in table:
-
-        print(line)
         #take the current line, take the first letter of each line, assume that 1st letter and succeeding letters are 
         #connected via states
-        curr = line
-        if(line):
-             line.pop(0)
-        print(curr)
+        curr = line[0]
+        line.pop(0)
+
         for letter in line:
-            dfa.edge(curr[0], letter)
+            dfa.edge(curr, letter)
 
     return dfa
 
@@ -127,13 +120,13 @@ def fsstate(dfa_table):
         ftable.pop(0)
         stable.pop(0)
         #in is used for circumstances where start and final shares the same node
-        if(line):
-            if '+' in line[0]:
+        if '+' in line[0]:
                  line = line.split(',')
                  ftable.append(line[1])
-            elif '-' in line[0]:
+        elif '-' in line[0]:
                  line = line.split(',')
                  stable.append(line[1])
+            
     
     return stable, ftable
 
