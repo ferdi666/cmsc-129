@@ -10,6 +10,7 @@ import pathlib
 px = 30
 py = 10
 
+#TODO fix table for the transition table for DFA
 class ImportTable:
     def __init__(self, window):
 
@@ -62,6 +63,12 @@ def processInputFiles():
     
     if(checkInput(user_in, dfa_table, statusCanvas) == True and checkDFA(dfa_table) == True):
         processFile(user_in, dfa_table)      
+
+    textfile = open('strings.out')
+    textData = textfile.read()
+    textfile.close()
+    outputCanvas.create_text(100,100, text=textData, fill='black')
+    outputCanvas.pack()
 
 def deleteCanvas():
     inputCanvas.delete('all')

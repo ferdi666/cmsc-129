@@ -4,6 +4,9 @@ import string
 #functionalities
 
 def processFile(user_in, dfa_table):
+
+    outFile = open('strings.out', 'w')
+
     stringinput = readinput(user_in)
     g = dfa(dfa_table)
     #create an array of all final states
@@ -19,8 +22,16 @@ def processFile(user_in, dfa_table):
         #print(curr + " " + state + "\n")
         if curr in final:
             print("String is valid")
+            outFile.write('VALID\n')
         else:
             print("String is invalid")
+            outFile.write('INVALID\n')
+    
+    outFile.close()
+    
+    
+    
+    
     
 
 #graph will be used as a translation of dfa   
