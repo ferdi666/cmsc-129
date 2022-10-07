@@ -60,10 +60,21 @@ def loadFile():
     # print('File is loaded')
 
 def processInputFiles():
+<<<<<<< HEAD
     
     if(checkInput(user_in, dfa_table, statusCanvas) == True and checkDFA(dfa_table) == True):
         processFile(user_in, dfa_table)      
 
+=======
+    #int flags
+    #check for empty lines
+    #.
+    #.
+
+
+    #if flags == 0 
+    processFile(user_in, dfa_table)
+>>>>>>> 5dd1471 (updates)
     textfile = open('strings.out')
     textData = textfile.read()
     textfile.close()
