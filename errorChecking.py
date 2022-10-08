@@ -24,17 +24,18 @@ def checkInput(user_in, dfa_table, statusCanvas):
             flag1=False
             statusCanvas.configure(text="there's an empty element")
             statusCanvas.pack()
-            break
+            return False
     #for loop that checks if there is a whitespace in an element
     for i, word in enumerate(input):
         #insert statuscanvas
+        # print(input[i])
         for x in range(len(word)):
-
-            if word[x] == '':
+            # print(word[x])
+            if word[x] ==" ":
                 flag2 = False
                 statusCanvas.configure(text="existing whitespace in elements")
                 statusCanvas.pack()
-                break
+                return False
     
     flag3=(compareString(res, input, statusCanvas))
 
@@ -45,9 +46,9 @@ def checkInput(user_in, dfa_table, statusCanvas):
 
 def checkDFA(dfa_table):
     particular_line = linecache.getline(dfa_table, 1)
-    print(particular_line)
+    # print(particular_line)
     test= splitFirstLine(particular_line)
-    print(test)
+    # print(test)
     input=readinput(dfa_table)
 
     myset = set(test)
@@ -90,6 +91,16 @@ def compareString(res, input, statusCanvas):
     mergedRes = ''.join(setRes)
     mergedInput = ''.join(finalInput)
 
+    # testRes = '10'
+    # testInput = '01'
+
+    # if testRes == testInput:
+    #     print('holyshit it worked!')
+    # else:
+    #     print('oh no no no...')
+
+    print("mergedRes: %s" %mergedRes)
+    print("mergedInput: %s" %mergedInput)
     if mergedRes == mergedInput:
         print('input strings are valid')
         return True

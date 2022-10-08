@@ -16,7 +16,7 @@ def processFile(user_in, dfa_table):
     #for each line in stringinput, check for the next node given the current node and the state
     for line in stringinput:
         for state in line:
-           curr = g.nextnode(curr, ord(state)-48)
+            curr = g.nextnode(curr, ord(state)-48)
         
         #added for debugging purposes only, used as guide to know the current node and the state
         #print(curr + " " + state + "\n")
@@ -58,7 +58,7 @@ class Graph:
         #given state, which is the next node
         for line in graph.items():
                 if n1 == line[0]:
-                   return line[1][state]
+                    return line[1][state]
             
     #returns the starting node
     def start(self):

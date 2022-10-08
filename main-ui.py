@@ -1,8 +1,9 @@
 from sys import flags
 from tkinter import *
 from tkinter import filedialog
-
+import os
 from DFAProcessing import processFile
+from DFATableGenerator import generateTable
 from errorChecking import checkDFA, checkInput
 
 import pathlib
@@ -10,30 +11,10 @@ import pathlib
 px = 30
 py = 10
 
-#TODO fix table for the transition table for DFA
-class ImportTable:
-    def __init__(self, window):
-
-        for i in range(total_rows):
-            for j in range(total_columns):
-                self.e = Entry(window, width=5, fg='red', font=('Arial',15, 'bold' ))
-                self.e.grid(row=i, column=j)
-                self.e.insert(END, dataList[i][j])
-
-dataList = [(1,'Raj','Mumbai',19),
-        (2,'Aaryan','Pune',18),
-        (3,'Vaishnavi','Mumbai',20),
-        (4,'Rachna','Mumbai',21),
-        (5,'Shubham','Delhi',21)]
-
-total_rows = len(dataList)
-total_columns =  len(dataList[0])
-
 #functionalities
 def loadFile():
-    #user_in holds path for string input, dfa_table holds path for transition, global var so we can use it outside this 
-    #function
-    global user_in, dfa_table
+    #user_in holds path for string input, dfa_table holds path for transition, global var so we can use it outside this function
+    global user_in, dfa_table, inputStringName, inputDFAName
     path = filedialog.askopenfilename(filetypes=[("String files","*.in"),('Transitions','*.dfa')])
     fileExtension = pathlib.Path(path).suffix
     
@@ -41,49 +22,71 @@ def loadFile():
         textFile = open(path)
         textData = textFile.read()
         textFile.close()
+
+        inputStringName = os.path.basename(path)
+
+        if inputCanvas.find_all()!=():
+            inputCanvas.delete('all')
+        
         inputCanvas.create_text(100,100, text=textData, fill='black')
         inputCanvas.pack()
+
+        statusCanvas.configure(text="Input from file %s has been successfully loaded" %inputStringName)
+        statusCanvas.pack()
+        
         user_in = path
 
     elif(fileExtension=='.dfa'):
         textFile = open(path)
         textData = textFile.read()
         textFile.close()
-        transitionCanvas.create_text(100,100, text=textData, fill='black')
-        transitionCanvas.pack()
+
+        inputDFAName = os.path.basename(path)
+
+        if transitionCanvas.find_all()!=():
+            transitionCanvas.delete('all')
+
+        generateTable(transitionCanvas, path)
+
+        # transitionCanvas.create_text(100,100, text=textData, fill='black')
+        # transitionCanvas.pack()
+
+        statusCanvas.configure(text="DFA table from %s has been successfully loaded" %inputDFAName)
+        statusCanvas.pack()
+
         dfa_table = path
 
     else:
+        statusCanvas.configure(text='Invalid file type')
+        statusCanvas.pack()
         print('Invalid file type')
 
     return path
-    # print('File is loaded')
 
 def processInputFiles():
-<<<<<<< HEAD
     
     if(checkInput(user_in, dfa_table, statusCanvas) == True and checkDFA(dfa_table) == True):
         processFile(user_in, dfa_table)      
+        textfile = open('strings.out')
+        textData = textfile.read()
+        textfile.close()
 
-=======
-    #int flags
-    #check for empty lines
-    #.
-    #.
+        if outputCanvas.find_all()!=():
+            outputCanvas.delete('all')
+        
+        outputCanvas.create_text(100,100, text=textData, fill='black')
+        outputCanvas.pack()
 
-
-    #if flags == 0 
-    processFile(user_in, dfa_table)
->>>>>>> 5dd1471 (updates)
-    textfile = open('strings.out')
-    textData = textfile.read()
-    textfile.close()
-    outputCanvas.create_text(100,100, text=textData, fill='black')
-    outputCanvas.pack()
+        statusCanvas.configure(text="Input from %s sucessfully processed using DFA Table from %s.\n Output is saved to strings.out" %(inputStringName, inputDFAName))
+        statusCanvas.pack()
+    else:
+        if outputCanvas.find_all()!=():
+            outputCanvas.delete('all')
 
 def deleteCanvas():
     inputCanvas.delete('all')
     outputCanvas.delete('all')
+    transitionCanvas.delete('all')
 
 #-----------main-window---------------
 mainWindow = Tk()
