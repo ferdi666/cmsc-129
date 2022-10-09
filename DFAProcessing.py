@@ -2,7 +2,7 @@ import pathlib
 import string
 
 #functionalities
-#processfile() - takes in string and dfa paths and creates an output pf whether each string inputs are viable using the dfa table, creates an output file
+#processfile() - takes in string and dfa paths and creates and analyzes whether each string inputs are viable using the dfa table
 #readinput() - converts .in or .dfa to a string arrays separated by line
 #dfa() - takes in .dfa and creates a graph data structure based on the adjacency created by the dfa table
 #ffstate() - takes in .dfa and separates the starting point and ending points
