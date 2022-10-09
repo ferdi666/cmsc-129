@@ -1,3 +1,8 @@
+#A program that recognizes strings based on given deterministic finite automata
+#Program UI and output file creation by Ferdinand Gador
+#Error checking by Mark Valderama and Jasper Villarosa
+#DFA and String recognition and analysis by Van Joseph P. Cabuga
+
 from sys import flags
 from tkinter import *
 from tkinter import filedialog
@@ -10,6 +15,7 @@ import pathlib
 
 px = 30
 py = 10
+
 
 #functionalities
 def loadFile():
